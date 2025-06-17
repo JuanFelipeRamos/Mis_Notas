@@ -1,34 +1,12 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import api from '../services/axios'
 import { usePasswordToggle } from '@/services/verPassword'
 
-const router = useRouter()
 const usuario = ref({
-  username: '',
-  password: ''
+  password_actual: '',
+  password_nueva: '',
+  password_confirmar: '',
 })
-
-const login = async () => {
-  try {
-    const response = await api.post('/token/', {
-      username: usuario.value.username,
-      password: usuario.value.password,
-    })
-
-    // Guardar tokens en localStorage
-    localStorage.setItem('access', response.data.access)
-    localStorage.setItem('refresh', response.data.refresh)
-
-    console.log('Inicio de sesión exitoso')
-    router.push('/home') // Redirige a la página de inicio
-
-  } catch (error) {
-    alert('Error al iniciar sesión')
-    console.error(error)
-  }
-}
 
 // Para mostrar o no el texto que se escribe en el input de contraseña
 const { mostrarPassword, togglePassword } = usePasswordToggle()
@@ -37,28 +15,45 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
 
 <template>
   <div class="login-container">
-    <div class="login-box">
-      <h1>INICIA SESIÓN</h1>
-      <form @submit.prevent="login">
-        <input v-model="usuario.username" type="text" placeholder="NOMBRE DE USUARIO" />
-
+    <div class="email-box">
+      <h1>CAMBIA TU CONTRASEÑA</h1>
+      <form>
         <div class="input-password-container">
           <input
-            v-model="usuario.password"
+            v-model="usuario.password_actual"
             :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="CONTRASEÑA"
+            placeholder="CONTRASEÑA ACTUAL"
           />
           <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
             {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
           </span>
         </div>
 
-        <p>
-          <router-link to="/changepassword" class="link">¿Olvidó su contraseña?</router-link>
-        </p>
+        <div class="input-password-container">
+          <input
+            v-model="usuario.password_nueva"
+            :type="mostrarPassword ? 'text' : 'password'"
+            placeholder="NUEVA CONTRASEÑA"
+          />
+          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
+            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
+          </span>
+        </div>
+
+        <div class="input-password-container">
+          <input
+            v-model="usuario.password_confirmar"
+            :type="mostrarPassword ? 'text' : 'password'"
+            placeholder="CONFIRMAR CONTRASEÑA"
+          />
+          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
+            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
+          </span>
+        </div>
+
         <button>CONTINUAR</button>
       </form>
-      <p>O crea una cuenta <router-link to="/register">aquí</router-link></p>
+      <p><router-link to="/">Volver</router-link></p>
     </div>
   </div>
 </template>
@@ -72,7 +67,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   align-items: center;
 }
 
-.login-box {
+.email-box {
   background-color: #c3863f;
   padding: 45px 40px;
   text-align: center;
@@ -80,21 +75,11 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   width: 400px;
 }
 
-.login-box h1 {
+.email-box h1 {
   font-size: 24px;
   margin-bottom: 30px;
   font-weight: bold;
   color: #000;
-}
-
-.login-box input {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
 }
 
 .input-password-container {
@@ -115,7 +100,17 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   font-size: 24px;
 }
 
-.login-box button {
+.email-box input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+.email-box button {
   background-color: #5d0000;
   color: white;
   border: none;
@@ -127,19 +122,19 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   margin-top: 20px;
 }
 
-.login-box p {
+.email-box p {
   margin-top: 25px;
   font-size: 16px;
   color: #000;
 }
 
-.login-box a {
+.email-box a {
   text-decoration: none;
   color: inherit;
 }
 
-.login-box a:hover,
-.link:hover {
+.email-box a:hover {
   color: white;
 }
+
 </style>

@@ -18,10 +18,6 @@ def send_email(email_user, subject, html_content):
       "html": html_content
     }
 
-    print("Enviando con estos datos:")
-    print("Headers:", headers)
-    print("Data:", data)
-
     try:
         response = requests.post(url, json=data, headers=headers, timeout=10)
 

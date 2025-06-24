@@ -146,6 +146,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# para la API de envío de correos (para recuperar contraseña de usuario) con Brevo
-RESEND_FOR_EMAIL = 'Mis Tareas <onboarding@resend.dev>' #jr9385197@gmail.com
-RESEND_API_KEY = 're_jX2nFLiY_26NRHuu5bju8DRAupsHiRpLW'
+# para la API de envío de correos (para recuperar contraseña de usuario) con Resend
+#RESEND_FOR_EMAIL = os.getenv("RESEND_FOR_EMAIL")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+#DEFAULT_FROM_EMAIL = RESEND_FOR_EMAIL
+
+#print("➡️ Email remitente desde .env:", RESEND_FOR_EMAIL)

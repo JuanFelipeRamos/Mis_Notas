@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Esto busca el archivo .env automáticamente
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,3 +145,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# para la API de envío de correos (para recuperar contraseña de usuario) con Brevo
+RESEND_FOR_EMAIL = 'Mis Tareas <onboarding@resend.dev>' #jr9385197@gmail.com
+RESEND_API_KEY = 're_jX2nFLiY_26NRHuu5bju8DRAupsHiRpLW'

@@ -1,55 +1,19 @@
 <script setup>
 import { ref } from 'vue'
-import { usePasswordToggle } from '@/services/verPassword'
 
 const usuario = ref({
-  password_actual: '',
-  password_nueva: '',
-  password_confirmar: '',
+  email: ''
 })
-
-// Para mostrar o no el texto que se escribe en el input de contraseña
-const { mostrarPassword, togglePassword } = usePasswordToggle()
 
 </script>
 
 <template>
-  <div class="login-container">
+  <div class="password-container">
     <div class="email-box">
       <h1>CAMBIA TU CONTRASEÑA</h1>
       <form>
-        <div class="input-password-container">
-          <input
-            v-model="usuario.password_actual"
-            :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="CONTRASEÑA ACTUAL"
-          />
-          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
-            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
-          </span>
-        </div>
-
-        <div class="input-password-container">
-          <input
-            v-model="usuario.password_nueva"
-            :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="NUEVA CONTRASEÑA"
-          />
-          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
-            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
-          </span>
-        </div>
-
-        <div class="input-password-container">
-          <input
-            v-model="usuario.password_confirmar"
-            :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="CONFIRMAR CONTRASEÑA"
-          />
-          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
-            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
-          </span>
-        </div>
+        <p id="text">Ingresa tu correo electrónico para que te enviemos un enlace donde podrás recuperar tu contraseña</p>
+        <input v-model="usuario.email" type="email" placeholder ="CORREO ELECTRÓNICO" required />
 
         <button>CONTINUAR</button>
       </form>
@@ -59,7 +23,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
 </template>
 
 <style scoped>
-.login-container {
+.password-container {
   height: 100vh;
   background-color: #2b0000;
   display: flex;
@@ -80,24 +44,6 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   margin-bottom: 30px;
   font-weight: bold;
   color: #000;
-}
-
-.input-password-container {
-  position: relative;
-}
-
-.input-password-container input {
-  padding-right: 40px; /* espacio para el ícono */
-}
-
-.icono-ojo {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #555;
-  font-size: 24px;
 }
 
 .email-box input {
@@ -126,6 +72,10 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   margin-top: 25px;
   font-size: 16px;
   color: #000;
+}
+
+#text {
+  margin-bottom: 15px;
 }
 
 .email-box a {

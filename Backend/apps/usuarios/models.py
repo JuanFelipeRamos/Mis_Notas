@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 class Usuario(AbstractUser):
     """
@@ -9,6 +8,7 @@ class Usuario(AbstractUser):
     email
     password
     is_staff
+    is_active
     is_superuser
     date_joined
     last_login

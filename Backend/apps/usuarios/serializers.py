@@ -11,6 +11,8 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = Usuario(**validated_data)
         user.set_password(password) # Se encripta la contraseña
+
+        user.is_active = False
         user.save()
         return user
 

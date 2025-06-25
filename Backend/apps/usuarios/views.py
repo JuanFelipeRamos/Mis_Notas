@@ -50,18 +50,18 @@ class MsgValidacionEmailView(APIView):
                 "error": "Usuario no encontrado"
                 }, status=status.HTTP_404_NOT_FOUND)
 
-        #uid = urlsafe_base64_encode(force_bytes(usuario.pk))
-        #token = default_token_generator.make_token(usuario)
+        uid = urlsafe_base64_encode(force_bytes(usuario.pk))
+        token = default_token_generator.make_token(usuario)
 
-        """verification_url = request.build_absolute_uri(
-            reverse('verify_email', kwargs={'uidb64': uid, 'token': token})
-        )"""
+        verification_url = request.build_absolute_uri(
+            reverse('activar-cuenta', kwargs={'uidb64': uid, 'token': token})
+        )
 
         subject = "Verifica tu correo en Mis Tareas"
         html_content = f"""
         <h1>Hola {usuario.first_name},</h1>
         <p>Gracias por registrarte. Haz clic en el siguiente enlace para verificar tu correo y así poder iniciar sesión:</p>
-        <a href="#">Verificar correo</a>
+        <a href="{verification_url}">Verificar correo</a>
         """
 
         try:

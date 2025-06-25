@@ -1,4 +1,4 @@
-# En este archivo estará la lógica para enviar correos electrónicos a los usuarios
+# En este archivo está la función para enviar correos electrónicos a los usuarios
 import requests
 from django.conf import settings
 

@@ -1,4 +1,4 @@
-# En este archivo estarán las funciones para activar la cuenta del usuario y recuperar contraseña
+# En este archivo estarán las funciones para activar la cuenta del usuario y cambiar contraseña
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
@@ -21,3 +21,7 @@ def activar_cuenta(request, uidb64, token):
         return HttpResponseRedirect("http://localhost:5173/")
     else:
         return HttpResponse("Error al activar tu cuenta.")
+
+
+# Función para cambiar la contraseña del usuario
+

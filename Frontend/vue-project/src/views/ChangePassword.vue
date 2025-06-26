@@ -10,7 +10,7 @@ const usuario = ref({
 <template>
   <div class="password-container">
     <div class="email-box">
-      <h1>CAMBIA TU CONTRASEÑA</h1>
+      <h1>RECUPERA TU CONTRASEÑA</h1>
       <form>
         <p id="text">Ingresa tu correo electrónico para que te enviemos un enlace donde podrás recuperar tu contraseña</p>
         <input v-model="usuario.email" type="email" placeholder ="CORREO ELECTRÓNICO" required />

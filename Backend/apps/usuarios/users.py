@@ -25,3 +25,5 @@ def activar_cuenta(request, uidb64, token):
 
 # Función para cambiar la contraseña del usuario
 
+def cambiar_pwd(request):
+    print("ejemplo")

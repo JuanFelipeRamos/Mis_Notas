@@ -1,32 +1,45 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import api from '../services/axios'
 import { usePasswordToggle } from '@/services/verPassword'
 
+const route = useRoute()
 const router = useRouter()
+
+const uidb64 = route.query.uidb64
+const token = route.query.token
+
+console.log("uidb64:", uidb64)
+console.log("token:", token)
+
 const usuario = ref({
-  username: '',
-  password: ''
+  password: '',
+  passwordConfirmada: ''
 })
 
-const login = async () => {
+const recuperarPassword = async () => {
+  if (usuario.value.password !== usuario.value.passwordConfirmada){
+    console.log("error, las contraseñas no coinciden")
+    alert("Error, las contraseñas ongresadas no coinciden entre ellas, deben ser iguales")
+    return
+  }
+
   try {
-    const response = await api.post('/token/', {
-      username: usuario.value.username,
-      password: usuario.value.password,
+    const response = await api.post(`/usuarios/recuperar_pwd/${uidb64}/${token}/`, {
+      password: usuario.value.password
     })
+    
+    console.log(response.data)
 
-    // Guardar tokens en localStorage
-    localStorage.setItem('access', response.data.access)
-    localStorage.setItem('refresh', response.data.refresh)
+    usuario.value = {
+      password: ''
+    }
 
-    console.log('Inicio de sesión exitoso')
-    router.push('/home') // Redirige a la página de inicio
-
+    router.push('/msgpwdcambiada')
   } catch (error) {
-    alert('Error al iniciar sesión')
-    console.error(error)
+    console.error("Error al recuperar contraseña:", error)
+    alert("Hubo un problema al cambiar tu contraseña.")
   }
 }
 
@@ -36,35 +49,40 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <h1>INICIA SESIÓN</h1>
-      <form @submit.prevent="login">
-        <input v-model="usuario.username" type="text" placeholder="NOMBRE DE USUARIO" />
-
+  <div class="pwd-container">
+    <div class="pwd-box">
+      <h1>RECUPERA TU CONTRASEÑA</h1>
+      <form @submit.prevent="recuperarPassword">
+        <p>Aquí puedes ingresar una nueva contraseña para asignarla a tu cuenta, recomendado que la contraseña sea fácil de recordar (anotala en un lugar seguro).</p>
         <div class="input-password-container">
           <input
             v-model="usuario.password"
             :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="CONTRASEÑA"
+            placeholder="NUEVA CONTRASEÑA"
+          />
+          <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
+            {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
+          </span>
+
+          <input
+            v-model="usuario.passwordConfirmada"
+            :type="mostrarPassword ? 'text' : 'password'"
+            placeholder="CONFIRMAR NUEVA CONTRASEÑA"
           />
           <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
             {{ mostrarPassword ? 'visibility' : 'visibility_off' }}
           </span>
         </div>
-
-        <p>
-          <router-link to="/recuperarpassword" class="link">¿Olvidó su contraseña?</router-link>
-        </p>
+        
         <button>CONTINUAR</button>
       </form>
-      <p>O crea una cuenta <router-link to="/register">aquí</router-link></p>
+      <p><router-link to="/">Volver</router-link></p>
     </div>
   </div>
 </template>
 
 <style scoped>
-.login-container {
+.pwd-container {
   height: 100vh;
   background-color: #2b0000;
   display: flex;
@@ -72,7 +90,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   align-items: center;
 }
 
-.login-box {
+.pwd-box {
   background-color: #c3863f;
   padding: 45px 40px;
   text-align: center;
@@ -80,14 +98,14 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   width: 400px;
 }
 
-.login-box h1 {
+.pwd-box h1 {
   font-size: 24px;
   margin-bottom: 30px;
   font-weight: bold;
   color: #000;
 }
 
-.login-box input {
+.pwd-box input {
   display: block;
   width: 100%;
   padding: 12px;
@@ -102,7 +120,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
 }
 
 .input-password-container input {
-  padding-right: 40px; /* espacio para el ícono */
+  padding-right: 40px;
 }
 
 .icono-ojo {
@@ -115,7 +133,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   font-size: 24px;
 }
 
-.login-box button {
+.pwd-box button {
   background-color: #5d0000;
   color: white;
   border: none;
@@ -127,18 +145,18 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
   margin-top: 20px;
 }
 
-.login-box p {
+.pwd-box p {
   margin-top: 25px;
   font-size: 16px;
   color: #000;
 }
 
-.login-box a {
+.pwd-box a {
   text-decoration: none;
   color: inherit;
 }
 
-.login-box a:hover,
+.pwd-box a:hover,
 .link:hover {
   color: white;
 }

@@ -1,9 +1,33 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import api from '../services/axios';
 
+const router = useRouter()
 const usuario = ref({
   email: ''
 })
+
+const recuperarPassword = async (e) => {
+  e.preventDefault()
+
+  try {
+    // Para enviar correo de activación de cuenta
+    const response = await api.post('/usuarios/msg_recuperar_pwd/', {
+      email: usuario.value.email
+    })
+
+    usuario.value.email = ''
+
+    router.push('/msgrecuperarpdw')
+  } catch (error) {
+    alert('Ocurrió un error al solicitar la recuperación de contraseña.')
+    console.error('Error:', error)
+    if (error.response && error.response.data) {
+      console.log("Detalles del backend:", error.response.data.detalle);
+    }
+  }
+}
 
 </script>
 
@@ -11,8 +35,8 @@ const usuario = ref({
   <div class="password-container">
     <div class="email-box">
       <h1>RECUPERA TU CONTRASEÑA</h1>
-      <form>
-        <p id="text">Ingresa tu correo electrónico para que te enviemos un enlace donde podrás recuperar tu contraseña</p>
+      <form @submit.prevent="recuperarPassword">
+        <p id="text">Ingresa tu correo electrónico para que te enviemos un enlace donde podrás recuperar tu contraseña.</p>
         <input v-model="usuario.email" type="email" placeholder ="CORREO ELECTRÓNICO" required />
 
         <button>CONTINUAR</button>

@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Home from '@/views/Home.vue'
-import ChangePassword from '@/views/ChangePassword.vue'
-import MsgActivarCuenta from '@/views/MsgActivarCuenta.vue'
-import CuentaActivada from '@/views/CuentaActivada.vue'
+import RecuperarPassword from '@/views/RecuperarPassword.vue'
+import MsgActivarCuenta from '@/components/MsgActivarCuenta.vue'
+import MsgRecuperarPdw from '@/components/MsgRecuperarPdw.vue'
+import AddNewPwd from '@/views/AddNewPwd.vue'
+import MsgPwdCambiada from '@/components/MsgPwdCambiada.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,9 +30,9 @@ const router = createRouter({
     },
 
     {
-      path: '/changepassword',
-      name: 'changepassword',
-      component: ChangePassword,
+      path: '/recuperarpassword',
+      name: 'recuperarpassword',
+      component: RecuperarPassword,
     },
 
     {
@@ -38,11 +40,23 @@ const router = createRouter({
       name: 'msgactivarcuenta',
       component: MsgActivarCuenta,
     },
-    
+
     {
-      path: '/cuentaactivada/:uid/:token',
-      name: 'cuentaactivada',
-      component: CuentaActivada,
+      path: '/msgrecuperarpdw',
+      name: 'msgrecuperarpdw',
+      component: MsgRecuperarPdw,
+    },
+
+    {
+      path: '/addnewpwd',
+      name: 'addnewpwd',
+      component: AddNewPwd,
+    },
+
+    {
+      path: '/msgpwdcambiada',
+      name: 'msgpwdcambiada',
+      component: MsgPwdCambiada,
     },
   ],
 })

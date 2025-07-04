@@ -99,7 +99,7 @@ class MsgValidacionEmailView(APIView):
 
 
 # Vista para enviar email de recuperación de contraseña
-class MsgCambiarPasswordView(APIView):
+class MsgRecuperarPasswordView(APIView):
     def post(self, request):
         datos_usuario = obtener_usuario(request)
 
@@ -108,9 +108,7 @@ class MsgCambiarPasswordView(APIView):
                 "error": "Usuario no encontrado"
             }, status=status.HTTP_404_NOT_FOUND)
 
-        verification_url = request.build_absolute_uri(
-            reverse('cambiar-password', kwargs={'uidb64': datos_usuario['uid'], 'token': datos_usuario['token']})
-        )
+        verification_url = f"http://localhost:5173/addnewpwd?uidb64={datos_usuario['uid']}&token={datos_usuario['token']}"
 
         subject = "Cambia tu contraseña en Mis Tareas"
         html_content = f"""

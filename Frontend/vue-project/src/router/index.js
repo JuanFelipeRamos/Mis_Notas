@@ -7,6 +7,7 @@ import MsgActivarCuenta from '@/components/MsgActivarCuenta.vue'
 import MsgRecuperarPdw from '@/components/MsgRecuperarPdw.vue'
 import AddNewPwd from '@/views/AddNewPwd.vue'
 import MsgPwdCambiada from '@/components/MsgPwdCambiada.vue'
+import MsgSinAcceso from '@/components/MsgSinAcceso.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +58,12 @@ const router = createRouter({
       path: '/msgpwdcambiada',
       name: 'msgpwdcambiada',
       component: MsgPwdCambiada,
+    },
+
+    {
+      path: '/msgsinacceso',
+      name: 'msgsinacceso',
+      component: MsgSinAcceso,
     },
   ],
 })

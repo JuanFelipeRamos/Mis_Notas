@@ -74,7 +74,7 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
 
 .login-box {
   background-color: #c3863f;
-  padding: 45px 40px;
+  padding: 55px 40px;
   text-align: center;
   border-radius: 12px;
   width: 400px;

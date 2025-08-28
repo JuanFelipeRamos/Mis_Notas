@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
-    'apps.usuarios'
+    'apps.usuarios',
+    'apps.tareas',
 ]
 
 REST_FRAMEWORK = {
@@ -148,7 +149,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # para la API de envío de correos (para recuperar contraseña de usuario) con Resend
 #RESEND_FOR_EMAIL = os.getenv("RESEND_FOR_EMAIL")
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY") # CAMBIAR A DECOUPLE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #DEFAULT_FROM_EMAIL = RESEND_FOR_EMAIL
-
-#print("➡️ Email remitente desde .env:", RESEND_FOR_EMAIL)

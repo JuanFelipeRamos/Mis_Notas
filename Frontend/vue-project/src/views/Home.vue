@@ -12,6 +12,12 @@ function logout() {
   router.push('/')
   console.log('Sesión cerrada con éxito')
 }
+
+let token = localStorage.getItem('access')
+if (!token) {
+  router.push('/msgsinacceso')
+}
+
 </script>
 
 

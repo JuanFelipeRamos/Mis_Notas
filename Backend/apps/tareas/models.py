@@ -8,7 +8,7 @@ class Grupo(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.name, self.creador}"
+        return f"{self.name, self.creador, self.creation_date}"
 
     class Meta:
         verbose_name = "Grupo"

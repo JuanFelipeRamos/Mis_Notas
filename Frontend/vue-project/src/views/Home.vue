@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
+
 const isLoggedIn = ref(true)
 
 const router = useRouter()
@@ -18,21 +20,24 @@ if (!token) {
   router.push('/msgsinacceso')
 }
 
+const showModal = ref(false)
+
 </script>
 
 
 <template>
   <div class="home-container">
+    <ModalCrearAlgo v-model="showModal" h1="INGRESA UN TÍTULO" txtButton="Crear grupo" />
     <div class="grupos">
       <div class="contenido-grupo">
         <h2>GRUPOS</h2>
         <hr />
-        <button class="btn-grupo">Añadir grupo</button>
+        <button @click="showModal = true" class="btn-grupo">Añadir grupo</button>
       </div>
 
       <div class="cerrar-sesion">
         <hr />
-        <a href="#" @click.prevent="logout">Cerrar sesión</a>
+        <a @click.prevent="logout">Cerrar sesión</a>
       </div>
     </div>
 

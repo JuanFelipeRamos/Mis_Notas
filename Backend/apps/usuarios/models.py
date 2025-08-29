@@ -17,8 +17,8 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = ['email'] # Para que al crear un superusuario se pidan este campo
 
     def __str__(self):
-        return f"{self.first_name, self.last_name}"
-    
+        return f"{self.first_name}"
+
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"

@@ -40,13 +40,13 @@ const { mostrarPassword, togglePassword } = usePasswordToggle()
     <div class="login-box">
       <h1>INICIA SESIÓN</h1>
       <form @submit.prevent="login">
-        <input v-model="usuario.username" type="text" placeholder="NOMBRE DE USUARIO" />
+        <input v-model="usuario.username" type="text" required placeholder="NOMBRE DE USUARIO" />
 
         <div class="input-password-container">
           <input
             v-model="usuario.password"
             :type="mostrarPassword ? 'text' : 'password'"
-            placeholder="CONTRASEÑA"
+            required placeholder="CONTRASEÑA"
           />
           <span class="material-symbols-outlined icono-ojo" @click="togglePassword">
             {{ mostrarPassword ? 'visibility' : 'visibility_off' }}

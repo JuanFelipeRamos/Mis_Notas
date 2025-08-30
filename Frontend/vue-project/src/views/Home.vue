@@ -1,12 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '../services/axios'
 import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
+import TxtGrupoList from '@/components/TxtGrupoList.vue'
 
 const isLoggedIn = ref(true)
-
 const router = useRouter()
 
+// cerrar sesión
 function logout() {
   localStorage.removeItem('access')
   localStorage.removeItem('refresh')
@@ -15,12 +17,41 @@ function logout() {
   console.log('Sesión cerrada con éxito')
 }
 
+// ver si el usuario no tiene token de acceso para la ruta de este componente
 let token = localStorage.getItem('access')
 if (!token) {
   router.push('/msgsinacceso')
 }
 
 const showModal = ref(false)
+
+// listar grupos
+const grupo = ref([])
+
+const listarGrupos = async () => {
+  try {
+    const response = await api.get('/tareas/listar_grupos/',
+      {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    grupo.value = response.data
+
+    if (grupo.value.length === 0) {
+      console.log("No hay registros de grupos")
+    } else {
+      console.log("Sí hay registros de grupos")
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  listarGrupos()
+})
 
 </script>
 
@@ -44,7 +75,13 @@ const showModal = ref(false)
     <div class="listas">
       <h2>TUS LISTAS</h2>
       <hr />
-      <p class="no-listas">Aún no tienes ninguna lista</p>
+      <p v-if="grupo.length === 0" class="no-listas">
+        Aún no tienes ninguna lista
+      </p>
+
+      <div v-else>
+        <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" />
+      </div>
     </div>
   </div>
 </template>

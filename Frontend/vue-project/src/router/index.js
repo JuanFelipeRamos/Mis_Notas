@@ -9,6 +9,7 @@ import AddNewPwd from '@/views/AddNewPwd.vue'
 import MsgPwdCambiada from '@/components/MsgPwdCambiada.vue'
 import MsgSinAcceso from '@/components/MsgSinAcceso.vue'
 import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
+import TxtGrupoList from '@/components/TxtGrupoList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -73,6 +74,14 @@ const router = createRouter({
       component: ModalCrearAlgo,
       props: true
     },
+
+    {
+      path: '/txtgrupolist',
+      name: 'txtgrupolist',
+      component: TxtGrupoList,
+      props: true
+    },
+
   ],
 })
 

@@ -4,7 +4,7 @@ from .models import Grupo
 class GrupoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grupo
-        fields = ["id", "name"]
+        fields = ["id", "name", "description"]
 
     def create(self, validated_data):
         request = self.context.get("request")

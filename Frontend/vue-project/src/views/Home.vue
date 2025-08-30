@@ -58,12 +58,15 @@ onMounted(() => {
 
 <template>
   <div class="home-container">
-    <ModalCrearAlgo v-model="showModal" h1="INGRESA UN TÍTULO" txtButton="Crear grupo" />
+    <ModalCrearAlgo v-model="showModal" h1="INGRESA UN TÍTULO" txtButton="Crear grupo" @grupoCreado="listarGrupos" />
     <div class="grupos">
       <div class="contenido-grupo">
         <h2>GRUPOS</h2>
         <hr />
         <button @click="showModal = true" class="btn-grupo">Añadir grupo</button>
+        <div v-if="grupo.length > 0">
+          <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" class="listGrups" />
+        </div>
       </div>
 
       <div class="cerrar-sesion">
@@ -78,10 +81,6 @@ onMounted(() => {
       <p v-if="grupo.length === 0" class="no-listas">
         Aún no tienes ninguna lista
       </p>
-
-      <div v-else>
-        <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" />
-      </div>
     </div>
   </div>
 </template>
@@ -118,7 +117,7 @@ onMounted(() => {
 
 .btn-grupo {
   background-color: #c79f6e;
-  color: #fff;
+  color: black;
   padding: 12px;
   width: 100%;
   font-weight: bold;
@@ -128,7 +127,19 @@ onMounted(() => {
   transition: background-color 0.3s;
 }
 
-.btn-grupo:hover {
+.listGrups {
+  background-color: #c79f6e;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-grupo:hover, .listGrups:hover {
   background-color: #bb925f;
 }
 
@@ -178,4 +189,9 @@ onMounted(() => {
   text-align: center;
   margin-top: 25px;
 }
+
+.listGrups {
+  margin-top: 7px;
+}
+
 </style>

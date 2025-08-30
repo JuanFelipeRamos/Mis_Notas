@@ -8,11 +8,7 @@ defineProps({
   txtButton: String
 })
 
-const emit = defineEmits(["update:modelValue"])
-
-function closeModal() {
-  emit("update:modelValue", false)
-}
+const emit = defineEmits(["update:modelValue", "grupoCreado"])
 
 // Crear grupo
 const token = localStorage.getItem("token")
@@ -39,7 +35,8 @@ const crearGrupo = async () => {
       name: ''
     }
 
-    closeModal()
+    emit("update:modelValue", false)
+    emit('grupoCreado')
 
     alert("Grupo creado exitosamente")
   } catch (error) {

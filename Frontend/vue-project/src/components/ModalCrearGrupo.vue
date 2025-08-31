@@ -1,18 +1,16 @@
 <script setup>
-import api from '../services/axios'
 import { ref } from 'vue'
+import api from '../services/axios'
 
 defineProps({
-  modelValue: Boolean,
-  h1: String,
-  txtButton: String
+  modelValue: Boolean
 })
+
+const emit = defineEmits(["update:modelValue", "grupoCreado"])
 
 function closeModal() {
   emit("update:modelValue", false)
 }
-
-const emit = defineEmits(["update:modelValue", "grupoCreado"])
 
 // Crear grupo
 const token = localStorage.getItem("token")
@@ -58,10 +56,10 @@ const crearGrupo = async () => {
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
-      <h1>{{ h1 }}</h1>
+      <h1>INGRESA UN TÍTULO</h1>
       <form @submit.prevent="crearGrupo">
         <input type="text" placeholder="ESCRIBE AQUÍ..." v-model="grupo.name" required />
-        <button>{{ txtButton }}</button>
+        <button>Crear grupo</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>
     </div>

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '../services/axios'
-import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
+import ModalCrearGrupo from '@/components/ModalCrearGrupo.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 
@@ -81,7 +81,7 @@ function verGrupo(grupo) {
 
 <template>
   <div class="home-container">
-    <ModalCrearAlgo v-model="showModal" h1="INGRESA UN TÍTULO" txtButton="Crear grupo" @grupoCreado="listarGrupos" />
+    <ModalCrearGrupo v-model="showModal" @grupoCreado="listarGrupos" />
     <div class="grupos">
       <div class="contenido-grupo">
         <div class="txtGrupoYCantidad">

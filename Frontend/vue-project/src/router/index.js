@@ -10,6 +10,7 @@ import MsgPwdCambiada from '@/components/MsgPwdCambiada.vue'
 import MsgSinAcceso from '@/components/MsgSinAcceso.vue'
 import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
+import ButtonComponent from '@/components/ButtonComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,6 +80,13 @@ const router = createRouter({
       path: '/txtgrupolist',
       name: 'txtgrupolist',
       component: TxtGrupoList,
+      props: true
+    },
+
+    {
+      path: '/buttoncomponent',
+      name: 'buttoncomponent',
+      component: ButtonComponent,
       props: true
     },
 

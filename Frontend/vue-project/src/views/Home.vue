@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import api from '../services/axios'
 import ModalCrearAlgo from '@/components/ModalCrearAlgo.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
+import ButtonComponent from '@/components/ButtonComponent.vue'
 
 const isLoggedIn = ref(true)
 const router = useRouter()
@@ -88,7 +89,7 @@ function verGrupo(grupo) {
           <h2 class="h2ConEspacio">{{ cantGrups }}</h2>
         </div>
         <hr />
-        <button @click="showModal = true" class="btn-grupo">Añadir grupo</button>
+        <ButtonComponent @click="showModal = true" txt="Añadir Grupo" />
         <div v-if="grupo.length > 0">
           <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" :value="g.id" @click="verGrupo(g)" class="listGrups" />
         </div>
@@ -107,8 +108,13 @@ function verGrupo(grupo) {
       </div>
       <hr />
       <p v-if="grupo.length === 0" class="no-listas">
-        Aún no tienes ninguna lista
+        Aún no tienes ningun grupo, crea uno para empezar a crear listas y tareas.
       </p>
+      <p v-if="grupo.length > 0 && !seHaSeleccionado" class="no-listas">
+        Elije un grupo para ver sus listas y tareas.
+      </p>
+
+      <ButtonComponent v-if="seHaSeleccionado" txt="Añadir lista" class="btnAddLista" />
     </div>
   </div>
 </template>
@@ -143,18 +149,6 @@ function verGrupo(grupo) {
   margin-bottom: 30px;
 }
 
-.btn-grupo {
-  background-color: #c79f6e;
-  color: black;
-  padding: 12px;
-  width: 100%;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
 .listGrups {
   background-color: #c79f6e;
   color: white;
@@ -166,7 +160,7 @@ function verGrupo(grupo) {
   transition: background-color 0.3s;
 }
 
-.btn-grupo:hover, .listGrups:hover {
+.listGrups:hover {
   background-color: #bb925f;
 }
 
@@ -228,6 +222,10 @@ function verGrupo(grupo) {
 
 .h2ConEspacio {
   margin-left: 6px;
+}
+
+.btnAddLista {
+  width: 310px;
 }
 
 </style>

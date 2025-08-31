@@ -27,6 +27,7 @@ const showModal = ref(false)
 
 // listar grupos
 const grupo = ref([])
+const cantGrups = ref(0)
 
 const listarGrupos = async () => {
   try {
@@ -38,12 +39,15 @@ const listarGrupos = async () => {
     })
 
     grupo.value = response.data
+    console.log(grupo.value)
 
     if (grupo.value.length === 0) {
       console.log("No hay registros de grupos")
     } else {
       console.log("Sí hay registros de grupos")
     }
+
+    cantGrups.value = grupo.value.length
   } catch (error) {
     console.error(error)
   }
@@ -53,6 +57,24 @@ onMounted(() => {
   listarGrupos()
 })
 
+// mostrar nombre del grupo en el tablero al dar click en grupo
+const nameSelecionado = ref('')
+const idGrupo = ref()
+const nameEnMayusculas = ref('')
+const seHaSeleccionado = ref(false)
+
+function verGrupo(grupo) {
+  idGrupo.value = grupo.id
+  nameSelecionado.value = grupo.name
+  nameEnMayusculas.value = nameSelecionado.value.toUpperCase()
+
+  if (nameSelecionado.value == '') {
+    console.log("No se ha seleccionado un grupo para visualizarlo")
+  } else {
+    seHaSeleccionado.value = true
+  }
+}
+
 </script>
 
 
@@ -61,11 +83,14 @@ onMounted(() => {
     <ModalCrearAlgo v-model="showModal" h1="INGRESA UN TÍTULO" txtButton="Crear grupo" @grupoCreado="listarGrupos" />
     <div class="grupos">
       <div class="contenido-grupo">
-        <h2>GRUPOS</h2>
+        <div class="txtGrupoYCantidad">
+          <h2>GRUPOS -</h2>
+          <h2 class="h2ConEspacio">{{ cantGrups }}</h2>
+        </div>
         <hr />
         <button @click="showModal = true" class="btn-grupo">Añadir grupo</button>
         <div v-if="grupo.length > 0">
-          <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" class="listGrups" />
+          <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" :value="g.id" @click="verGrupo(g)" class="listGrups" />
         </div>
       </div>
 
@@ -76,7 +101,10 @@ onMounted(() => {
     </div>
 
     <div class="listas">
-      <h2>TUS LISTAS</h2>
+      <div class="txtNameGrupo">
+        <h2>TUS LISTAS</h2>
+        <h2 v-if="seHaSeleccionado" class="h2ConEspacio">DE {{ nameEnMayusculas }}</h2>
+      </div>
       <hr />
       <p v-if="grupo.length === 0" class="no-listas">
         Aún no tienes ninguna lista
@@ -131,7 +159,6 @@ onMounted(() => {
   background-color: #c79f6e;
   color: white;
   padding: 12px;
-  width: 100%;
   font-weight: bold;
   border: none;
   border-radius: 8px;
@@ -167,7 +194,7 @@ onMounted(() => {
 .listas {
   flex: 1;
   background-color: #320f0c;
-  padding: 30px;
+  padding: 20px;
   color: #fff;
   box-sizing: border-box;
 }
@@ -192,6 +219,15 @@ onMounted(() => {
 
 .listGrups {
   margin-top: 7px;
+}
+
+.txtGrupoYCantidad, .txtNameGrupo {
+  display: flex;
+  justify-content: center;
+}
+
+.h2ConEspacio {
+  margin-left: 6px;
 }
 
 </style>

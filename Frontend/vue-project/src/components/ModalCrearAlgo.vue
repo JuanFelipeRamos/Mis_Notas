@@ -8,6 +8,10 @@ defineProps({
   txtButton: String
 })
 
+function closeModal() {
+  emit("update:modelValue", false)
+}
+
 const emit = defineEmits(["update:modelValue", "grupoCreado"])
 
 // Crear grupo

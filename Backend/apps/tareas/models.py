@@ -3,7 +3,7 @@ from apps.usuarios.models import Usuario
 
 class Grupo(models.Model):
     name = models.CharField(max_length=32)
-    description = models.TextField(max_length=100, blank=True, null=True)
+    description = models.TextField(max_length=150, blank=True, null=True)
     creador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     creation_date = models.DateTimeField(auto_now_add=True)
 
@@ -16,7 +16,7 @@ class Grupo(models.Model):
 
 
 class Lista(models.Model):
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=41)
     description = models.TextField(max_length=100, blank=True, null=True)
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
     creador = models.ForeignKey(Usuario, on_delete=models.CASCADE)

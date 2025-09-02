@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import api from '../services/axios'
 
-defineProps({
-  modelValue: Boolean
+const props = defineProps({
+  modelValue: Boolean,
+  dato: Number
 })
 
 const emit = defineEmits(["update:modelValue", "grupoCreado"])
@@ -12,66 +13,42 @@ function closeModal() {
   emit("update:modelValue", false)
 }
 
-// Crear grupo
-const token = localStorage.getItem("token")
-const grupo = ref({
-  name: '',
-  description: ''
-})
+// Obtener descipción del grupo seleccionado
+const desciptionGrupo = ref('')
 
-const crearGrupo = async () => {
+let token = localStorage.getItem('access')
+
+const verDescripcionGrupo = async () => {
   try {
-    if (grupo.value.name.length > 32) {
-      alert("Debes ingresar un nombre más corto")
-      return
-    }
-
-    if (grupo.value.description.length > 100) {
-      alert("Debes ingresar una descripción más corta")
-      return
-    }
-
-    const response = await api.post('/tareas/crear_grupo/', {
-      name: grupo.value.name,
-      description: grupo.value.description
-    }, {
+    const response = await api.get(`/tareas/crear_grupo/${props.dato}/`,
+      {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
 
-    grupo.value = {
-      name: '',
-      description: ''
-    }
+    desciptionGrupo.value = response.data.description
 
     emit("update:modelValue", false)
     emit('grupoCreado')
-
-    alert("Grupo creado exitosamente")
   } catch (error) {
-    alert("Error al crear grupo")
+    alert("Error al listar descripción del grupo")
     console.error(error)
-
-    grupo.value = {
-      name: '',
-      description: ''
-    }
   }
 }
+
+onMounted(() => {
+  verDescripcionGrupo()
+})
 
 </script>
 
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
-      <h1>AÑADE UN GRUPO</h1>
-      <form @submit.prevent="crearGrupo">
-        <input type="text" placeholder="NOMBRE" v-model="grupo.name" required />
-        <input type="text" placeholder="DESCRIPCIÓN (OPCIONAL)" v-model="grupo.description" />
-        <button>Crear grupo</button>
-      </form>
-      <a @click.prevent="closeModal">Cancelar</a>
+      <h1>DESCRIPCIÓN DE ESTE GRUPO</h1>
+      <p>{{ desciptionGrupo }}</p>
+      <a @click.prevent="closeModal">Salir</a>
     </div>
   </div>
 </template>
@@ -117,18 +94,6 @@ const crearGrupo = async () => {
   font-size: 14px;
 }
 
-.modal-box button {
-  background-color: #5d0000;
-  color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  margin: 20px 0px;
-}
-
 .modal-box a {
   margin-top: 25px;
   font-size: 16px;
@@ -139,5 +104,11 @@ const crearGrupo = async () => {
 
 .modal-box a:hover {
   color: white;
+}
+
+p {
+  color: black;
+  margin-bottom: 30px;
+  font-style: italic;
 }
 </style>

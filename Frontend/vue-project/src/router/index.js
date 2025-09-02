@@ -11,6 +11,9 @@ import MsgSinAcceso from '@/components/MsgSinAcceso.vue'
 import ModalCrearGrupo from '@/components/ModalCrearGrupo.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
+import ModalCrearLista from '@/components/ModalCrearLista.vue'
+import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
+import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +89,26 @@ const router = createRouter({
       path: '/buttoncomponent',
       name: 'buttoncomponent',
       component: ButtonComponent,
+      props: true
+    },
+
+    {
+      path: '/modalcrearlista',
+      name: 'modalcrearlista',
+      component: ModalCrearLista,
+    },
+
+    {
+      path: '/modalcreardescripciongrupo',
+      name: 'modalcreardescripciongrupo',
+      component: ModalCrearDescripcionGrupo,
+      props: true
+    },
+
+    {
+      path: '/verdescriptiongrupo',
+      name: 'verdescriptiongrupo',
+      component: VerDescriptionGrupo,
       props: true
     },
 

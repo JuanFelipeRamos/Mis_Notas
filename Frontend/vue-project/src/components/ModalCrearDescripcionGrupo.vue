@@ -3,7 +3,8 @@ import { ref } from 'vue'
 import api from '../services/axios'
 
 defineProps({
-  modelValue: Boolean
+  modelValue: Boolean,
+  dato: Number
 })
 
 const emit = defineEmits(["update:modelValue", "grupoCreado"])
@@ -12,37 +13,24 @@ function closeModal() {
   emit("update:modelValue", false)
 }
 
-// Crear grupo
-const token = localStorage.getItem("token")
+// Crear descipción para grupo
 const grupo = ref({
-  name: '',
-  description: ''
+  desciption: ''
 })
 
-const crearGrupo = async () => {
+const crearDescripcionGrupo = async () => {
   try {
-    if (grupo.value.name.length > 32) {
-      alert("Debes ingresar un nombre más corto")
-      return
-    }
-
-    if (grupo.value.description.length > 100) {
+    if (grupo.value.desciption.length > 100) {
       alert("Debes ingresar una descripción más corta")
       return
     }
 
     const response = await api.post('/tareas/crear_grupo/', {
-      name: grupo.value.name,
-      description: grupo.value.description
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      desciption: grupo.value.desciption
     })
 
     grupo.value = {
-      name: '',
-      description: ''
+      desciption: ''
     }
 
     emit("update:modelValue", false)
@@ -54,8 +42,7 @@ const crearGrupo = async () => {
     console.error(error)
 
     grupo.value = {
-      name: '',
-      description: ''
+      desciption: ''
     }
   }
 }
@@ -65,11 +52,10 @@ const crearGrupo = async () => {
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
-      <h1>AÑADE UN GRUPO</h1>
-      <form @submit.prevent="crearGrupo">
-        <input type="text" placeholder="NOMBRE" v-model="grupo.name" required />
-        <input type="text" placeholder="DESCRIPCIÓN (OPCIONAL)" v-model="grupo.description" />
-        <button>Crear grupo</button>
+      <h1>AÑADE UNA DESCRIPCIÓN</h1>
+      <form @submit.prevent="crearDescripcionGrupo">
+        <input type="text" placeholder="ESCRIBE AQUÍ..." v-model="grupo.desciption" required />
+        <button>Añadir descripción</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>
     </div>

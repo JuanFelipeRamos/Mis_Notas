@@ -3,8 +3,11 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '../services/axios'
 import ModalCrearGrupo from '@/components/ModalCrearGrupo.vue'
+import ModalCrearLista from '@/components/ModalCrearLista.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
+import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
+import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
 
 const isLoggedIn = ref(true)
 const router = useRouter()
@@ -18,6 +21,7 @@ function logout() {
   console.log('Sesión cerrada con éxito')
 }
 
+
 // ver si el usuario no tiene token de acceso para la ruta de este componente
 let token = localStorage.getItem('access')
 if (!token) {
@@ -25,6 +29,7 @@ if (!token) {
 }
 
 const showModal = ref(false)
+
 
 // listar grupos
 const grupo = ref([])
@@ -40,13 +45,14 @@ const listarGrupos = async () => {
     })
 
     grupo.value = response.data
-    console.log(grupo.value)
-
+    
     if (grupo.value.length === 0) {
       console.log("No hay registros de grupos")
     } else {
       console.log("Sí hay registros de grupos")
     }
+
+    console.log(grupo.value)
 
     cantGrups.value = grupo.value.length
   } catch (error) {
@@ -58,21 +64,41 @@ onMounted(() => {
   listarGrupos()
 })
 
+
 // mostrar nombre del grupo en el tablero al dar click en grupo
 const nameSelecionado = ref('')
 const idGrupo = ref()
 const nameEnMayusculas = ref('')
+const descriptionSeleccionado = ref('')
 const seHaSeleccionado = ref(false)
 
 function verGrupo(grupo) {
   idGrupo.value = grupo.id
-  nameSelecionado.value = grupo.name
+  nameSelecionado.value = grupo.name // capturar el name del grupo seleccionado
   nameEnMayusculas.value = nameSelecionado.value.toUpperCase()
+
+  descriptionSeleccionado.value = grupo.description // capturar la descripción del grupo seleccionado
 
   if (nameSelecionado.value == '') {
     console.log("No se ha seleccionado un grupo para visualizarlo")
   } else {
     seHaSeleccionado.value = true
+  }
+}
+
+// mostrar modal para crear lista
+const showModalList = ref(false)
+
+
+// validar si al grupo seleccionado ya se le añadió una descripción para mostrarla o pedirla si no
+const showDescription = ref(false)
+const pedirDescription = ref(false)
+
+function showModalAddDescription() {
+  if (descriptionSeleccionado.value === null) {
+    pedirDescription.value = true // PONER AQUÍ MODAL CON MENSAJE DE NO DESCRIPCIÓN
+  } else {
+    showDescription.value = true // PONER AQUÍ MODAL CON DESCRIPCIÓN
   }
 }
 
@@ -108,13 +134,25 @@ function verGrupo(grupo) {
       </div>
       <hr />
       <p v-if="grupo.length === 0" class="no-listas">
-        Aún no tienes ningun grupo, crea uno para empezar a crear listas y tareas.
+        Aún no tienes ningun grupo, crea uno para empezar a crear listas y tareas
       </p>
       <p v-if="grupo.length > 0 && !seHaSeleccionado" class="no-listas">
-        Elije un grupo para ver sus listas y tareas.
+        Elije un grupo para ver sus listas y tareas
       </p>
 
-      <ButtonComponent v-if="seHaSeleccionado" txt="Añadir lista" class="btnAddLista" />
+      <ButtonComponent v-if="seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
+      <ModalCrearLista v-model="showModalList" />
+      
+      <div class="grupoDescription" v-if="seHaSeleccionado">
+        <hr>
+        <div class="txtDescript">
+          <p class="accionGrupo" @click="showModalAddDescription">Descripción del grupo</p>
+          <p class="separarAccionesGrupo"> - </p>
+          <p class="accionGrupo">Eliminar Grupo</p>
+        </div>
+        <ModalCrearDescripcionGrupo v-model="pedirDescription" :dato="idGrupo" />
+        <VerDescriptionGrupo v-model="showDescription" :dato="idGrupo" />
+      </div>
     </div>
   </div>
 </template>
@@ -187,6 +225,8 @@ function verGrupo(grupo) {
 
 .listas {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background-color: #320f0c;
   padding: 20px;
   color: #fff;
@@ -203,6 +243,22 @@ function verGrupo(grupo) {
 .listas hr {
   border: 0.5px solid #ccc;
   margin-bottom: 20px;
+}
+
+.grupoDescription {
+  margin-top: auto;
+}
+
+.txtDescript {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.txtDescript .accionGrupo:hover {
+  color: rgb(206, 166, 166);
+  cursor: pointer;
 }
 
 .no-listas {
@@ -226,6 +282,10 @@ function verGrupo(grupo) {
 
 .btnAddLista {
   width: 310px;
+}
+
+.separarAccionesGrupo {
+  margin: 0px 15px;
 }
 
 </style>

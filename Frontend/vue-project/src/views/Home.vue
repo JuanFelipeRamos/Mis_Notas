@@ -1,13 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '../services/axios'
+import { listarGrupos, listarCantidadGrupos } from '@/services/grupos'
 import ModalCrearGrupo from '@/components/ModalCrearGrupo.vue'
 import ModalCrearLista from '@/components/ModalCrearLista.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
 import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
+import ModalBorrarGrupo from '@/components/ModalBorrarGrupo.vue'
 
 const isLoggedIn = ref(true)
 const router = useRouter()
@@ -32,37 +33,17 @@ const showModal = ref(false)
 
 
 // listar grupos
-const grupo = ref([])
-const cantGrups = ref(0)
-
-const listarGrupos = async () => {
+const listaDeGrupos = ref([])
+const cantidadDeGrupos = ref(0)
+onMounted(async () => {
   try {
-    const response = await api.get('/tareas/listar_grupos/',
-      {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    listaDeGrupos.value = await listarGrupos();
 
-    grupo.value = response.data
-    
-    if (grupo.value.length === 0) {
-      console.log("No hay registros de grupos")
-    } else {
-      console.log("Sí hay registros de grupos")
-    }
-
-    console.log(grupo.value)
-
-    cantGrups.value = grupo.value.length
+    cantidadDeGrupos.value = await listarCantidadGrupos();
   } catch (error) {
-    console.error(error)
+    console.error('Error al cargar datos:', error);
   }
-}
-
-onMounted(() => {
-  listarGrupos()
-})
+});
 
 
 // mostrar nombre del grupo en el tablero al dar click en grupo
@@ -78,13 +59,24 @@ function verGrupo(grupo) {
   nameEnMayusculas.value = nameSelecionado.value.toUpperCase()
 
   descriptionSeleccionado.value = grupo.description // capturar la descripción del grupo seleccionado
-
+  
   if (nameSelecionado.value == '') {
     console.log("No se ha seleccionado un grupo para visualizarlo")
   } else {
     seHaSeleccionado.value = true
   }
 }
+
+// listar grupos actualizados
+const actualizarGrupos = async () => {
+  listaDeGrupos.value = await listarGrupos()
+  cantidadDeGrupos.value = listaDeGrupos.value.length
+
+  if (!listaDeGrupos.value.some(g => g.id === idGrupo.value)) {
+    seHaSeleccionado.value = false
+  }
+}
+
 
 // mostrar modal para crear lista
 const showModalList = ref(false)
@@ -95,29 +87,32 @@ const showDescription = ref(false)
 const pedirDescription = ref(false)
 
 function showModalAddDescription() {
-  if (descriptionSeleccionado.value === null) {
-    pedirDescription.value = true // PONER AQUÍ MODAL CON MENSAJE DE NO DESCRIPCIÓN
+  if (descriptionSeleccionado.value === null || descriptionSeleccionado.value == '') {
+    pedirDescription.value = true
   } else {
-    showDescription.value = true // PONER AQUÍ MODAL CON DESCRIPCIÓN
+    showDescription.value = true
   }
 }
+
+// mostrar modal para eliminar grupo
+const showModalDeleteGrupo = ref(false)
 
 </script>
 
 
 <template>
   <div class="home-container">
-    <ModalCrearGrupo v-model="showModal" @grupoCreado="listarGrupos" />
+    <ModalCrearGrupo v-model="showModal" @grupoCreado="actualizarGrupos" />
     <div class="grupos">
       <div class="contenido-grupo">
         <div class="txtGrupoYCantidad">
           <h2>GRUPOS -</h2>
-          <h2 class="h2ConEspacio">{{ cantGrups }}</h2>
+          <h2 class="h2ConEspacio">{{ cantidadDeGrupos }}</h2>
         </div>
         <hr />
         <ButtonComponent @click="showModal = true" txt="Añadir Grupo" />
-        <div v-if="grupo.length > 0">
-          <TxtGrupoList v-for="g in grupo" :key="g.id" :name="g.name" :value="g.id" @click="verGrupo(g)" class="listGrups" />
+        <div v-if="listaDeGrupos.length > 0">
+          <TxtGrupoList v-for="g in listaDeGrupos" :key="g.id" :name="g.name" :value="g.id" @click="verGrupo(g)" class="listGrups" />
         </div>
       </div>
 
@@ -130,17 +125,17 @@ function showModalAddDescription() {
     <div class="listas">
       <div class="txtNameGrupo">
         <h2>TUS LISTAS</h2>
-        <h2 v-if="seHaSeleccionado" class="h2ConEspacio">DE {{ nameEnMayusculas }}</h2>
+        <h2 v-if="seHaSeleccionado && listaDeGrupos.length > 0" class="h2ConEspacio">DE {{ nameEnMayusculas }}</h2>
       </div>
       <hr />
-      <p v-if="grupo.length === 0" class="no-listas">
+      <p v-if="listaDeGrupos.length === 0" class="no-listas">
         Aún no tienes ningun grupo, crea uno para empezar a crear listas y tareas
       </p>
-      <p v-if="grupo.length > 0 && !seHaSeleccionado" class="no-listas">
+      <p v-if="listaDeGrupos.length > 0 && !seHaSeleccionado" class="no-listas">
         Elije un grupo para ver sus listas y tareas
       </p>
 
-      <ButtonComponent v-if="seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
+      <ButtonComponent v-if="listaDeGrupos.length > 0 && seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
       <ModalCrearLista v-model="showModalList" />
       
       <div class="grupoDescription" v-if="seHaSeleccionado">
@@ -148,10 +143,11 @@ function showModalAddDescription() {
         <div class="txtDescript">
           <p class="accionGrupo" @click="showModalAddDescription">Descripción del grupo</p>
           <p class="separarAccionesGrupo"> - </p>
-          <p class="accionGrupo">Eliminar Grupo</p>
+          <p class="accionGrupo" @click="showModalDeleteGrupo = true">Eliminar Grupo</p>
         </div>
         <ModalCrearDescripcionGrupo v-model="pedirDescription" :dato="idGrupo" />
         <VerDescriptionGrupo v-model="showDescription" :dato="idGrupo" />
+        <ModalBorrarGrupo :dato="idGrupo" v-model="showModalDeleteGrupo" @grupoBorrado="actualizarGrupos" />
       </div>
     </div>
   </div>

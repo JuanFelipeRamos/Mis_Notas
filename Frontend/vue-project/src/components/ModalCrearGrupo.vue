@@ -26,7 +26,7 @@ const crearGrupo = async () => {
       return
     }
 
-    if (grupo.value.description.length > 100) {
+    if (grupo.value.description.length > 150) {
       alert("Debes ingresar una descripción más corta")
       return
     }

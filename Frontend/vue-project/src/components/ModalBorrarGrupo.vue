@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import api from '../services/axios'
 
 const props = defineProps({
@@ -7,42 +6,31 @@ const props = defineProps({
   dato: Number
 })
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "grupoBorrado"])
 
 function closeModal() {
   emit("update:modelValue", false)
 }
 
-// Crear descipción para grupo
-const grupo = ref({
-  description: ''
-})
+// Eliminar grupo
+const token = localStorage.getItem("token")
 
-const crearDescripcionGrupo = async () => {
+const borrarGrupo = async () => {
   try {
-    if (grupo.value.description.length > 150) {
-      alert("Debes ingresar una descripción más corta")
-      return
-    }
-
-    const response = await api.patch(`/tareas/crear_grupo/${props.dato}/`, {
-      description: grupo.value.description
+    const response = await api.delete(`/tareas/crear_grupo/${props.dato}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
 
-    grupo.value = {
-      description: ''
-    }
-
     emit("update:modelValue", false)
+    emit('grupoBorrado')
 
-    alert("Descripción creada exitosamente")
+    alert("Grupo eliminado exitosamente")
   } catch (error) {
-    alert("Error al crear la descripción")
+    alert("Error al eliminar grupo")
     console.error(error)
-
-    grupo.value = {
-      desciption: ''
-    }
   }
 }
 
@@ -51,10 +39,9 @@ const crearDescripcionGrupo = async () => {
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
-      <h1>AÑADE UNA DESCRIPCIÓN</h1>
-      <form @submit.prevent="crearDescripcionGrupo">
-        <input type="text" placeholder="ESCRIBE AQUÍ..." v-model="grupo.description" required />
-        <button>Añadir descripción</button>
+      <h1>¿SEGURO QUE QUIERES BORRAR ESTE GRUPO?</h1>
+      <form @submit.prevent="borrarGrupo">
+        <button>Borrar grupo</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>
     </div>

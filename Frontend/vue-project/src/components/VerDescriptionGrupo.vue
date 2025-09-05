@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import api from '../services/axios'
 
 const props = defineProps({
@@ -7,7 +7,7 @@ const props = defineProps({
   dato: Number
 })
 
-const emit = defineEmits(["update:modelValue", "grupoCreado"])
+const emit = defineEmits(["update:modelValue"])
 
 function closeModal() {
   emit("update:modelValue", false)
@@ -18,9 +18,9 @@ const desciptionGrupo = ref('')
 
 let token = localStorage.getItem('access')
 
-const verDescripcionGrupo = async () => {
+const verDescripcionGrupo = async (id) => {
   try {
-    const response = await api.get(`/tareas/crear_grupo/${props.dato}/`,
+    const response = await api.get(`/tareas/crear_grupo/${id}/`,
       {
       headers: {
         Authorization: `Bearer ${token}`
@@ -30,16 +30,21 @@ const verDescripcionGrupo = async () => {
     desciptionGrupo.value = response.data.description
 
     emit("update:modelValue", false)
-    emit('grupoCreado')
   } catch (error) {
     alert("Error al listar descripción del grupo")
     console.error(error)
   }
 }
 
-onMounted(() => {
-  verDescripcionGrupo()
-})
+watch(
+  () => props.dato,
+  (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+      verDescripcionGrupo(newValue)
+    }
+  },
+  { immediate: true }
+)
 
 </script>
 

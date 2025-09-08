@@ -1,10 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
-import api from '../services/axios'
-
 const props = defineProps({
   modelValue: Boolean,
-  dato: Number
+  description: String
 })
 
 const emit = defineEmits(["update:modelValue"])
@@ -12,51 +9,18 @@ const emit = defineEmits(["update:modelValue"])
 function closeModal() {
   emit("update:modelValue", false)
 }
-
-// Obtener descipción del grupo seleccionado
-const desciptionGrupo = ref('')
-
-let token = localStorage.getItem('access')
-
-const verDescripcionGrupo = async (id) => {
-  try {
-    const response = await api.get(`/tareas/crear_grupo/${id}/`,
-      {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-
-    desciptionGrupo.value = response.data.description
-
-    emit("update:modelValue", false)
-  } catch (error) {
-    alert("Error al listar descripción del grupo")
-    console.error(error)
-  }
-}
-
-watch(
-  () => props.dato,
-  (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-      verDescripcionGrupo(newValue)
-    }
-  },
-  { immediate: true }
-)
-
 </script>
 
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
       <h1>DESCRIPCIÓN DE ESTE GRUPO</h1>
-      <p>{{ desciptionGrupo }}</p>
+      <p>{{ description }}</p>
       <a @click.prevent="closeModal">Salir</a>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .modal-container {

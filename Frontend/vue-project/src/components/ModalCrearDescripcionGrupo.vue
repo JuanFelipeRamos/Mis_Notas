@@ -7,7 +7,7 @@ const props = defineProps({
   dato: Number
 })
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "descripcionCreada"])
 
 function closeModal() {
   emit("update:modelValue", false)
@@ -28,6 +28,8 @@ const crearDescripcionGrupo = async () => {
     const response = await api.patch(`/tareas/crear_grupo/${props.dato}/`, {
       description: grupo.value.description
     })
+    
+    emit("descripcionCreada", grupo.value.description)
 
     grupo.value = {
       description: ''

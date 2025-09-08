@@ -94,6 +94,11 @@ function showModalAddDescription() {
   }
 }
 
+function handleDescripcionCreada(nuevaDescripcion) {
+  descriptionSeleccionado.value = nuevaDescripcion
+}
+
+
 // mostrar modal para eliminar grupo
 const showModalDeleteGrupo = ref(false)
 
@@ -145,8 +150,8 @@ const showModalDeleteGrupo = ref(false)
           <p class="separarAccionesGrupo"> - </p>
           <p class="accionGrupo" @click="showModalDeleteGrupo = true">Eliminar Grupo</p>
         </div>
-        <ModalCrearDescripcionGrupo v-model="pedirDescription" :dato="idGrupo" />
-        <VerDescriptionGrupo v-model="showDescription" :dato="idGrupo" />
+        <ModalCrearDescripcionGrupo v-model="pedirDescription" :dato="idGrupo" @descripcionCreada="handleDescripcionCreada" />
+        <VerDescriptionGrupo v-model="showDescription" :description="descriptionSeleccionado" />
         <ModalBorrarGrupo :dato="idGrupo" v-model="showModalDeleteGrupo" @grupoBorrado="actualizarGrupos" />
       </div>
     </div>

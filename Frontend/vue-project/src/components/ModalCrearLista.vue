@@ -15,18 +15,25 @@ function closeModal() {
 // Crear lista
 const token = localStorage.getItem("token")
 const grupo = ref({
-  name: ''
+  name: '',
+  description: ''
 })
 
 const crearLista = async () => {
   try {
     if (grupo.value.name.length > 41) {
-      alert("Debes ingresar un título más corto")
+      alert("Debes ingresar un nombre más corto")
+      return
+    }
+
+    if (grupo.value.description.length > 100) {
+      alert("Debes ingresar una descripción más corta")
       return
     }
 
     const response = await api.post('/tareas/crear_grupo/', {
-      name: grupo.value.name
+      name: grupo.value.name,
+      description: grupo.value.description
     }, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -34,7 +41,8 @@ const crearLista = async () => {
     })
 
     grupo.value = {
-      name: ''
+      name: '',
+      description: ''
     }
 
     emit("update:modelValue", false)
@@ -46,7 +54,8 @@ const crearLista = async () => {
     console.error(error)
 
     grupo.value = {
-      name: ''
+      name: '',
+      description: ''
     }
   }
 }
@@ -59,6 +68,7 @@ const crearLista = async () => {
       <h1>AÑADE UNA LISTA</h1>
       <form @submit.prevent="crearLista">
         <input type="text" placeholder="NOMBRE" v-model="grupo.name" required />
+        <input type="text" placeholder="DESCRIPCIÓN (OPCIONAL)" v-model="grupo.description" />
         <button>Crear lista</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>

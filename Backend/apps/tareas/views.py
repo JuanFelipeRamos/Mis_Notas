@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import GrupoSerializer
 from .models import Grupo
 
-# Vista para crear grupos
-class CrearGrupoViewSet(viewsets.ModelViewSet):
+# Vista para crear, listar, editar y eliminar grupos
+class GrupoViewSet(viewsets.ModelViewSet):
     queryset = Grupo.objects.all()
     serializer_class = GrupoSerializer
     permission_classes = [IsAuthenticated]

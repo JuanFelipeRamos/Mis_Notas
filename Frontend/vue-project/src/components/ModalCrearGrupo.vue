@@ -31,7 +31,7 @@ const crearGrupo = async () => {
       return
     }
 
-    const response = await api.post('/tareas/crear_grupo/', {
+    const response = await api.post('/tareas/grupos/', {
       name: grupo.value.name,
       description: grupo.value.description
     }, {

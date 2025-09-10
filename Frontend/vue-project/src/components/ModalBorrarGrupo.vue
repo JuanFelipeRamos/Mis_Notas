@@ -17,7 +17,7 @@ const token = localStorage.getItem("token")
 
 const borrarGrupo = async () => {
   try {
-    const response = await api.delete(`/tareas/crear_grupo/${props.dato}/`,
+    const response = await api.delete(`/tareas/grupos/${props.dato}/`,
     {
       headers: {
         Authorization: `Bearer ${token}`

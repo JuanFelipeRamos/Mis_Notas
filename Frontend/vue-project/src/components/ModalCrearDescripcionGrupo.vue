@@ -25,7 +25,7 @@ const crearDescripcionGrupo = async () => {
       return
     }
 
-    const response = await api.patch(`/tareas/crear_grupo/${props.dato}/`, {
+    const response = await api.patch(`/tareas/grupos/${props.dato}/`, {
       description: grupo.value.description
     })
     

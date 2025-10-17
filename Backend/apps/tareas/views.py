@@ -2,8 +2,8 @@
 from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import GrupoSerializer
-from .models import Grupo
+from .serializers import GrupoSerializer, ListaSerializer
+from .models import Grupo, Lista
 
 # Vista para crear, listar, editar y eliminar grupos
 class GrupoViewSet(viewsets.ModelViewSet):
@@ -19,3 +19,10 @@ class ListarGrupoView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Grupo.objects.filter(creador=user)
+
+
+# Vista para crear, listar, editar y eliminar listas
+class ListaViewSet(viewsets.ModelViewSet):
+    queryset = Lista
+    serializer_class = ListaSerializer
+    permission_classes = [IsAuthenticated]

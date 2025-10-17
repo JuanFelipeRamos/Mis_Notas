@@ -1,3 +1,4 @@
+#pylint: disable=no-member
 from rest_framework import serializers
 from .models import Grupo, Lista
 
@@ -18,6 +19,16 @@ class GrupoSerializer(BaseSerializer):
 
 # Serializer para listas
 class ListaSerializer(BaseSerializer):
+    id_grupo = serializers.IntegerField(write_only=True)
+    grupo = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Lista
-        fields = ["id", "name", "description"]
+        fields = ["id", "name", "description", "id_grupo", "grupo"]
+
+    # para asignar la lista al grupo seleccionado
+    def create(self, validated_data):
+        id_grupo = validated_data.pop("id_grupo")
+        grupo = Grupo.objects.get(id=id_grupo)
+        validated_data["grupo"] = grupo
+        return super().create(validated_data)

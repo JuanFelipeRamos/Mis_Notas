@@ -23,6 +23,24 @@ class ListarGrupoView(ListAPIView):
 
 # Vista para crear, listar, editar y eliminar listas
 class ListaViewSet(viewsets.ModelViewSet):
-    queryset = Lista
+    queryset = Lista.objects.all()
     serializer_class = ListaSerializer
     permission_classes = [IsAuthenticated]
+
+
+# Vista para listar listas (del grupo seleccionado)
+class ListarListaView(ListAPIView):
+    serializer_class = ListaSerializer
+
+    def get_queryset(self):
+        id_grupo = self.request.query_params.get("id_grupo")
+
+        if not id_grupo:
+            return Lista.objects.none()
+
+        try:
+            grupo_seleccionado = Grupo.objects.get(pk=id_grupo)
+        except Grupo.DoesNotExist:
+            return Lista.objects.none()
+
+        return Lista.objects.filter(grupo=grupo_seleccionado)

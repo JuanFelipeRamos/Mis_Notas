@@ -141,7 +141,7 @@ const showModalDeleteGrupo = ref(false)
       </p>
 
       <ButtonComponent v-if="listaDeGrupos.length > 0 && seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
-      <ModalCrearLista v-model="showModalList" />
+      <ModalCrearLista v-model="showModalList" :dato="idGrupo" />
       
       <div class="grupoDescription" v-if="seHaSeleccionado">
         <hr>

@@ -2,11 +2,12 @@
 import { ref } from 'vue'
 import api from '../services/axios'
 
-defineProps({
-  modelValue: Boolean
+const props = defineProps({
+  modelValue: Boolean,
+  dato: Number
 })
 
-const emit = defineEmits(["update:modelValue", "grupoCreado"])
+const emit = defineEmits(["update:modelValue", "listaCreada"])
 
 function closeModal() {
   emit("update:modelValue", false)
@@ -14,46 +15,47 @@ function closeModal() {
 
 // Crear lista
 const token = localStorage.getItem("token")
-const grupo = ref({
+const lista = ref({
   name: '',
   description: ''
 })
 
 const crearLista = async () => {
   try {
-    if (grupo.value.name.length > 41) {
+    if (lista.value.name.length > 41) {
       alert("Debes ingresar un nombre más corto")
       return
     }
 
-    if (grupo.value.description.length > 100) {
+    if (lista.value.description.length > 100) {
       alert("Debes ingresar una descripción más corta")
       return
     }
 
-    const response = await api.post('/tareas/crear_grupo/', {
-      name: grupo.value.name,
-      description: grupo.value.description
+    const response = await api.post('/tareas/listas/', {
+      name: lista.value.name,
+      description: lista.value.description,
+      id_grupo: props.dato
     }, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
 
-    grupo.value = {
+    lista.value = {
       name: '',
       description: ''
     }
 
     emit("update:modelValue", false)
-    emit('grupoCreado')
+    emit('listaCreada')
 
-    alert("Grupo creado exitosamente")
+    alert("Lista creada exitosamente")
   } catch (error) {
-    alert("Error al crear grupo")
+    alert("Error al crear lista")
     console.error(error)
 
-    grupo.value = {
+    lista.value = {
       name: '',
       description: ''
     }
@@ -67,8 +69,8 @@ const crearLista = async () => {
     <div class="modal-box">
       <h1>AÑADE UNA LISTA</h1>
       <form @submit.prevent="crearLista">
-        <input type="text" placeholder="NOMBRE" v-model="grupo.name" required />
-        <input type="text" placeholder="DESCRIPCIÓN (OPCIONAL)" v-model="grupo.description" />
+        <input type="text" placeholder="NOMBRE" v-model="lista.name" required />
+        <input type="text" placeholder="DESCRIPCIÓN (OPCIONAL)" v-model="lista.description" />
         <button>Crear lista</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>

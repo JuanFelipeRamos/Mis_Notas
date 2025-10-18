@@ -7,4 +7,8 @@ class GrupoAdmin(admin.ModelAdmin):
 
 @admin.register(Lista)
 class ListaAdmin(admin.ModelAdmin):
-    list_display = ("name", "creador", "grupo", "creation_date")
+    list_display = ("name", "creador", "nombre_grupo", "creation_date")
+
+    def nombre_grupo(self, obj):
+        return obj.grupo.name if obj.grupo else "-"
+    nombre_grupo.short_description = "GRUPO"

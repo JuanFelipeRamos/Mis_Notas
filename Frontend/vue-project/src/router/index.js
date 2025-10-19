@@ -15,6 +15,7 @@ import ModalCrearLista from '@/components/ModalCrearLista.vue'
 import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
 import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
 import ModalBorrarGrupo from '@/components/ModalBorrarGrupo.vue'
+import ListaComponent from '@/components/ListaComponent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -118,6 +119,12 @@ const router = createRouter({
       name: 'modalborrargrupo',
       component: ModalBorrarGrupo,
       props: true
+    },
+
+    {
+      path: '/listacomponent',
+      name: 'listacomponent',
+      component: ListaComponent
     },
 
   ],

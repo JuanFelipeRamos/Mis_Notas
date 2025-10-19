@@ -9,6 +9,7 @@ import ButtonComponent from '@/components/ButtonComponent.vue'
 import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
 import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
 import ModalBorrarGrupo from '@/components/ModalBorrarGrupo.vue'
+import ListaComponent from '@/components/ListaComponent.vue'
 
 const isLoggedIn = ref(true)
 const router = useRouter()
@@ -102,6 +103,9 @@ function handleDescripcionCreada(nuevaDescripcion) {
 // mostrar modal para eliminar grupo
 const showModalDeleteGrupo = ref(false)
 
+
+// mostrar listas de grupo seleccionado
+
 </script>
 
 
@@ -140,7 +144,11 @@ const showModalDeleteGrupo = ref(false)
         Elije un grupo para ver sus listas y tareas
       </p>
 
-      <ButtonComponent v-if="listaDeGrupos.length > 0 && seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
+      <div class="containerListasYButton">
+        <ListaComponent class="btnAddLista" />
+        <ButtonComponent v-if="listaDeGrupos.length > 0 && seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
+      </div>
+
       <ModalCrearLista v-model="showModalList" :dato="idGrupo" />
       
       <div class="grupoDescription" v-if="seHaSeleccionado">
@@ -244,6 +252,11 @@ const showModalDeleteGrupo = ref(false)
 .listas hr {
   border: 0.5px solid #ccc;
   margin-bottom: 20px;
+}
+
+.containerListasYButton {
+  display: flex;
+  gap: 20px;
 }
 
 .grupoDescription {

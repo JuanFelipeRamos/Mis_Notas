@@ -2,12 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { listarGrupos, listarCantidadGrupos } from '@/services/grupos'
+import { listarListasDeUnGrupo } from '@/services/listas'
 import ModalCrearGrupo from '@/components/ModalCrearGrupo.vue'
 import ModalCrearLista from '@/components/ModalCrearLista.vue'
 import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
-import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
+import VerDescription from '@/components/VerDescription.vue'
 import ModalBorrarGrupo from '@/components/ModalBorrarGrupo.vue'
 import ListaComponent from '@/components/ListaComponent.vue'
 
@@ -53,6 +54,7 @@ const idGrupo = ref()
 const nameEnMayusculas = ref('')
 const descriptionSeleccionado = ref('')
 const seHaSeleccionado = ref(false)
+const listaDeListas = ref([])
 
 function verGrupo(grupo) {
   idGrupo.value = grupo.id
@@ -66,6 +68,18 @@ function verGrupo(grupo) {
   } else {
     seHaSeleccionado.value = true
   }
+
+  // mostrar listas del grupo seleccionado
+  const verListas = async () => {
+    try {
+    listaDeListas.value = await listarListasDeUnGrupo(idGrupo.value);
+    console.log("Listas de este grupo:\n", listaDeListas.value)
+  } catch (error) {
+    console.error('Error al cargar datos:', error);
+  }
+  }
+
+  verListas()
 }
 
 // listar grupos actualizados
@@ -102,9 +116,6 @@ function handleDescripcionCreada(nuevaDescripcion) {
 
 // mostrar modal para eliminar grupo
 const showModalDeleteGrupo = ref(false)
-
-
-// mostrar listas de grupo seleccionado
 
 </script>
 
@@ -144,9 +155,9 @@ const showModalDeleteGrupo = ref(false)
         Elije un grupo para ver sus listas y tareas
       </p>
 
-      <div class="containerListasYButton">
-        <ListaComponent class="btnAddLista" />
-        <ButtonComponent v-if="listaDeGrupos.length > 0 && seHaSeleccionado" @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
+      <div class="containerListasYButton" v-if="listaDeGrupos.length > 0 && seHaSeleccionado">
+        <ListaComponent class="componenteLista" v-for="l in listaDeListas" :key="l.id" :name="l.name" :description="l.description" />
+        <ButtonComponent @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
       </div>
 
       <ModalCrearLista v-model="showModalList" :dato="idGrupo" />
@@ -159,7 +170,7 @@ const showModalDeleteGrupo = ref(false)
           <p class="accionGrupo" @click="showModalDeleteGrupo = true">Eliminar Grupo</p>
         </div>
         <ModalCrearDescripcionGrupo v-model="pedirDescription" :dato="idGrupo" @descripcionCreada="handleDescripcionCreada" />
-        <VerDescriptionGrupo v-model="showDescription" :description="descriptionSeleccionado" />
+        <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTE GRUPO" :description="descriptionSeleccionado" />
         <ModalBorrarGrupo :dato="idGrupo" v-model="showModalDeleteGrupo" @grupoBorrado="actualizarGrupos" />
       </div>
     </div>
@@ -294,7 +305,7 @@ const showModalDeleteGrupo = ref(false)
   margin-left: 6px;
 }
 
-.btnAddLista {
+.componenteLista, .btnAddLista {
   width: 310px;
 }
 

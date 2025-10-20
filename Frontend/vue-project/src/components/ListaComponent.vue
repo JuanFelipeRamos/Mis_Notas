@@ -1,19 +1,40 @@
 <script setup>
+import { ref } from 'vue';
 import ButtonComponent from './ButtonComponent.vue';
+import VerDescription from './VerDescription.vue';
+
+const showDescription = ref(false)
+const hayTareas = ref(false)
+const props = defineProps({
+    name: String,
+    listaDeTareas: Array,
+    description: String
+})
+
+if (props.listaDeTareas = []) {
+    hayTareas.value = false
+} else {
+    hayTareas.value = true
+}
+
+function verModalDescription() {
+    showDescription.value = true
+}
 
 </script>
 
 
 <template>
     <div class="container">
+        <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTA LISTA" :description="description" />
         <div class="containerNameLista">
-            <p class="nameLista">Análisis</p>
+            <p class="nameLista" @click="verModalDescription">{{ name }}</p>
         </div>
         <div class="containerTareas">
-            <ol>
-                <li>Levantar requerimientos</li>
-                <li>Diagramar requerimientos</li>
+            <ol v-if="hayTareas">
+                <li>{{ listaDeTareas }}</li>
             </ol>
+            <p v-if="hayTareas == false">Esta lista no tiene tareas</p>
             <div class="btnTareas">
                 <button>Añadir tarea</button>
             </div>
@@ -39,6 +60,10 @@ import ButtonComponent from './ButtonComponent.vue';
     text-align: center;
 }
 
+.nameLista {
+    cursor: pointer;
+}
+
 .containerTareas {
     display: flex;
     flex-direction: column;
@@ -61,6 +86,13 @@ li {
     font-size: 15px;
     margin-top: 7px;
     margin-left: 15px;
+}
+
+.containerTareas p {
+    color: black;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 15px;
 }
 
 .btnTareas {

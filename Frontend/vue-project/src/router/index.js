@@ -13,7 +13,7 @@ import TxtGrupoList from '@/components/TxtGrupoList.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 import ModalCrearLista from '@/components/ModalCrearLista.vue'
 import ModalCrearDescripcionGrupo from '@/components/ModalCrearDescripcionGrupo.vue'
-import VerDescriptionGrupo from '@/components/VerDescriptionGrupo.vue'
+import VerDescription from '@/components/VerDescription.vue'
 import ModalBorrarGrupo from '@/components/ModalBorrarGrupo.vue'
 import ListaComponent from '@/components/ListaComponent.vue'
 
@@ -108,9 +108,9 @@ const router = createRouter({
     },
 
     {
-      path: '/verdescriptiongrupo',
-      name: 'verdescriptiongrupo',
-      component: VerDescriptionGrupo,
+      path: '/verdescription',
+      name: 'verdescription',
+      component: VerDescription,
       props: true
     },
 

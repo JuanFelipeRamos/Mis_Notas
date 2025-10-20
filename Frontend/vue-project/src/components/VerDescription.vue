@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps({
+  h1: String,
   modelValue: Boolean,
   description: String
 })
@@ -14,7 +15,7 @@ function closeModal() {
 <template>
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
-      <h1>DESCRIPCIÓN DE ESTE GRUPO</h1>
+      <h1>{{ h1 }}</h1>
       <p>{{ description }}</p>
       <a @click.prevent="closeModal">Salir</a>
     </div>

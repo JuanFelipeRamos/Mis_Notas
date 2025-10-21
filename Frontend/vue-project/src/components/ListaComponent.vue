@@ -2,23 +2,32 @@
 import { ref } from 'vue';
 import ButtonComponent from './ButtonComponent.vue';
 import VerDescription from './VerDescription.vue';
+import ModalCrearDescriptionLista from './ModalCrearDescriptionLista.vue';
 
 const showDescription = ref(false)
+const showModalCrearDescription = ref(false)
 const hayTareas = ref(false)
 const props = defineProps({
     name: String,
     listaDeTareas: Array,
-    description: String
+    description: String,
+    idDescription: Number
 })
 
-if (props.listaDeTareas = []) {
+if (!props.listaDeTareas || props.listaDeTareas.length === 0) {
     hayTareas.value = false
 } else {
     hayTareas.value = true
 }
 
 function verModalDescription() {
-    showDescription.value = true
+    if (props.description != '') {
+        showDescription.value = true
+    }
+
+    if (!props.description || props.description.trim() === '') {
+        showModalCrearDescription.value = true
+    }
 }
 
 </script>
@@ -27,6 +36,7 @@ function verModalDescription() {
 <template>
     <div class="container">
         <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTA LISTA" :description="description" />
+        <ModalCrearDescriptionLista v-model="showModalCrearDescription" :dato="props.idDescription" />
         <div class="containerNameLista">
             <p class="nameLista" @click="verModalDescription">{{ name }}</p>
         </div>

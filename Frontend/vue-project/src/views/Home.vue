@@ -51,12 +51,13 @@ onMounted(async () => {
 // mostrar nombre del grupo en el tablero al dar click en grupo
 const nameSelecionado = ref('')
 const idGrupo = ref()
+const idLista = ref()
 const nameEnMayusculas = ref('')
 const descriptionSeleccionado = ref('')
 const seHaSeleccionado = ref(false)
 const listaDeListas = ref([])
 
-function verGrupo(grupo) {
+function verGrupo(grupo, lista) {
   idGrupo.value = grupo.id
   nameSelecionado.value = grupo.name // capturar el name del grupo seleccionado
   nameEnMayusculas.value = nameSelecionado.value.toUpperCase()
@@ -80,6 +81,8 @@ function verGrupo(grupo) {
   }
 
   verListas()
+
+  idLista.value = lista.id
 }
 
 // listar grupos actualizados
@@ -156,7 +159,7 @@ const showModalDeleteGrupo = ref(false)
       </p>
 
       <div class="containerListasYButton" v-if="listaDeGrupos.length > 0 && seHaSeleccionado">
-        <ListaComponent class="componenteLista" v-for="l in listaDeListas" :key="l.id" :name="l.name" :description="l.description" />
+        <ListaComponent class="componenteLista" v-for="l in listaDeListas" :key="l.id" :name="l.name" :value="l.id" :description="l.description" :idDescription="idLista" />
         <ButtonComponent @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
       </div>
 

@@ -11,7 +11,7 @@ const props = defineProps({
     name: String,
     listaDeTareas: Array,
     description: String,
-    idDescription: Number
+    idLista: Number
 })
 
 if (!props.listaDeTareas || props.listaDeTareas.length === 0) {
@@ -36,7 +36,7 @@ function verModalDescription() {
 <template>
     <div class="container">
         <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTA LISTA" :description="description" />
-        <ModalCrearDescriptionLista v-model="showModalCrearDescription" :dato="props.idDescription" />
+        <ModalCrearDescriptionLista v-model="showModalCrearDescription" :dato="props.idLista" />
         <div class="containerNameLista">
             <p class="nameLista" @click="verModalDescription">{{ name }}</p>
         </div>

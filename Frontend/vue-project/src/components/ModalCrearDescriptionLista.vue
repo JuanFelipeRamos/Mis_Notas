@@ -13,25 +13,30 @@ function closeModal() {
   emit("update:modelValue", false)
 }
 
-// Crear descipción para grupo
-const grupo = ref({
+// Crear descipción para lista
+const lista = ref({
   description: ''
 })
 
-const crearDescripcionGrupo = async () => {
+let token = localStorage.getItem('access')
+
+const crearDescripcionLista = async () => {
   try {
-    if (grupo.value.description.length > 150) {
+    if (lista.value.description.length > 100) {
       alert("Debes ingresar una descripción más corta")
       return
     }
 
-    const response = await api.patch(`/tareas/grupos/${props.dato}/`, {
-      description: grupo.value.description
+    const response = await api.patch(`/tareas/listas/${props.dato}/`, { //falta cuadrar bien el props.dato
+      description: lista.value.description,
+      Headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
     
-    emit("descripcionCreada", grupo.value.description)
+    emit("descripcionCreada", lista.value.description)
 
-    grupo.value = {
+    lista.value = {
       description: ''
     }
 
@@ -42,7 +47,7 @@ const crearDescripcionGrupo = async () => {
     alert("Error al crear la descripción")
     console.error(error)
 
-    grupo.value = {
+    lista.value = {
       desciption: ''
     }
   }
@@ -54,8 +59,8 @@ const crearDescripcionGrupo = async () => {
   <div class="modal-container" v-if="modelValue" @click.self="closeModal">
     <div class="modal-box">
       <h1>AÑADE UNA DESCRIPCIÓN</h1>
-      <form @submit.prevent="crearDescripcionGrupo">
-        <input type="text" placeholder="ESCRIBE AQUÍ..." v-model="grupo.description" required />
+      <form @submit.prevent="crearDescripcionLista">
+        <input type="text" placeholder="ESCRIBE AQUÍ..." v-model="lista.description" required />
         <button>Añadir descripción</button>
       </form>
       <a @click.prevent="closeModal">Cancelar</a>

@@ -159,7 +159,7 @@ const showModalDeleteGrupo = ref(false)
       </p>
 
       <div class="containerListasYButton" v-if="listaDeGrupos.length > 0 && seHaSeleccionado">
-        <ListaComponent class="componenteLista" v-for="l in listaDeListas" :key="l.id" :name="l.name" :value="l.id" :description="l.description" :idDescription="idLista" />
+        <ListaComponent class="componenteLista" v-for="l in listaDeListas" :key="l.id" :name="l.name" :value="l.id" :description="l.description" :idLista="idLista" />
         <ButtonComponent @click="showModalList = true" txt="Añadir lista" class="btnAddLista" />
       </div>
 

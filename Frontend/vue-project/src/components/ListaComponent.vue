@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ButtonComponent from './ButtonComponent.vue';
 import VerDescription from './VerDescription.vue';
 import ModalCrearDescriptionLista from './ModalCrearDescriptionLista.vue';
+import ModalBorrarLista from './ModalBorrarLista.vue';
 
 const showDescription = ref(false)
 const showModalCrearDescription = ref(false)
@@ -30,26 +31,30 @@ function verModalDescription() {
     }
 }
 
+// mostrar modal para eliminar lista
+const showModalDeleteLista = ref(false)
+
 </script>
 
 
 <template>
     <div class="container">
-        <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTA LISTA" :description="description" />
+        <VerDescription v-model="showDescription" h1="DESCRIPCIÓN DE ESTA LISTA" :description="props.description" />
         <ModalCrearDescriptionLista v-model="showModalCrearDescription" :dato="props.idLista" />
         <div class="containerNameLista">
-            <p class="nameLista" @click="verModalDescription">{{ name }}</p>
+            <p class="nameLista" @click="verModalDescription">{{ props.name }}</p>
         </div>
         <div class="containerTareas">
             <ol v-if="hayTareas">
-                <li>{{ listaDeTareas }}</li>
+                <li>{{ props.listaDeTareas }}</li>
             </ol>
             <p v-if="hayTareas == false">Esta lista no tiene tareas</p>
             <div class="btnTareas">
                 <button>Añadir tarea</button>
             </div>
         </div>
-        <ButtonComponent txt="Eliminar lista" />
+        <ButtonComponent @click="showModalDeleteLista = true" txt="Eliminar lista" />
+        <ModalBorrarLista :dato="props.idLista" v-model=" showModalDeleteLista" />
     </div>
 </template>
 

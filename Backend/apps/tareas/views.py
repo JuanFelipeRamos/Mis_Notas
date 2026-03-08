@@ -1,7 +1,9 @@
 #pylint: disable=no-member
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from .serializers import GrupoSerializer, ListaSerializer
 from .models import Grupo, Lista
 
@@ -26,6 +28,15 @@ class ListaViewSet(viewsets.ModelViewSet):
     queryset = Lista.objects.all()
     serializer_class = ListaSerializer
     permission_classes = [IsAuthenticated]
+
+    def destroy(self, request, pk=None):
+        lista = get_object_or_404(Lista, pk=pk)
+        lista.delete()
+
+        return Response(
+            "Lista eliminada correctamente",
+            status=status.HTTP_200_OK
+        )
 
 
 # Vista para listar listas (del grupo seleccionado)

@@ -13,13 +13,15 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 
 
 ## Características
-- Manejo de grupos (tableros) para dividir tareas por secciones (Crear, Editar y Eliminar grupos).
+- Manejo de grupos (tableros) para dividir tareas por temas/proyectos (Crear, Editar y Eliminar grupos).
 - Manejo de listas dentro de los grupos para organizar mejor las tareas (Crear, Editar y Eliminar listas).
 - Manejo de tareas con acciones como Crear, Marcar como REALIZADA o PENDIENTE y Eliminar.
 - Interfaz fácil de manejar.
 
 ## Instalación
-...
+Clonar repositorioa local: git clone ...
+Instalar dependencias del backend: cd Backend, python -m venv env, env\Scripts\activate, pip install -r requirements.txt, python manage.py runserver.
+Instalar dependencias del frontend: cd vue-project, npm install, npm run dev.
 
 ## Uso
 ...

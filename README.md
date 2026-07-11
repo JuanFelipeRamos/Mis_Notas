@@ -6,7 +6,10 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Screenshots
+<img width="1919" height="797" alt="image" src="https://github.com/user-attachments/assets/2bf49d64-a354-460d-988d-76d11b5f9b83" />
 <img width="1919" height="915" alt="image" src="https://github.com/user-attachments/assets/c418f46d-d473-470b-8f33-6312b082f67b" />
+<img width="1919" height="910" alt="image" src="https://github.com/user-attachments/assets/3a658e41-dd35-4a35-8fd6-3978403f08c5" />
+
 
 
 ## Características

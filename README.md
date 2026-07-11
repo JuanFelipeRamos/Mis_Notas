@@ -20,14 +20,25 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 
 ## Instalación
 - **Clonar repositorio al local:** git clone https://github.com/JuanFelipeRamos/Mis_Notas.git
-- **Instalar dependencias del backend:** cd Backend, python -m venv env, env\Scripts\activate, pip install -r requirements.txt, python manage.py runserver.
-- **Instalar dependencias del frontend:** cd vue-project, npm install, npm run dev.
+- **Instalar dependencias del backend:** cd Backend, python -m venv env, env\Scripts\activate, pip install -r requirements.txt.
+- **Instalar dependencias del frontend:** cd vue-project, npm install.
 
 ## Uso
-...
+1. **Backend:** cd Backend, env\Scripts\activate, python manage.py runserver.
+2. **Frontend**: cd vue-project, npm run dev.
+3. Abre `http://localhost:5173` en tu navegador.
+4. Crea un usuario y luego inicia sesión con tus credenciales.
+5. Desde el dashboard puedes:
+  - Crear, editar y eliminar grupos.
+  - Crear, editar y eliminar listas.
+  - Gestionar tareas.
 
 ## Tecnologías usadas
-...
+- Python 3.14.6
+- Django 5.2.1
+- Django rest framework 3.16.0
+- vue 3.5.13
+- MySQL
 
 ## Estructura del proyecto (opcional)
 ...

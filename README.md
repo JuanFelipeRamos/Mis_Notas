@@ -19,9 +19,24 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 - Interfaz fácil de manejar.
 
 ## Instalación
-- **Clonar repositorio al local:** git clone https://github.com/JuanFelipeRamos/Mis_Notas.git
-- **Instalar dependencias del backend:** cd Backend, python -m venv env, env\Scripts\activate, pip install -r requirements.txt.
-- **Instalar dependencias del frontend:** cd vue-project, npm install.
+**Clonar repositorio:**
+```bash
+git clone https://github.com/JuanFelipeRamos/Mis_Notas.git
+```
+
+**Backend:**
+```bash
+cd Backend
+python -m venv env
+env\Scripts\activate
+pip install -r requirements.txt
+```
+
+**Frontend:**
+```bash
+cd vue-project
+npm install
+```
 
 ## Uso
 1. **Backend:** cd Backend, env\Scripts\activate, python manage.py runserver.

@@ -6,7 +6,8 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Screenshots
-[INSERTAR CAPTURES DE PANTALLA DE LA APP AQUÍ!!!]
+<img width="1919" height="915" alt="image" src="https://github.com/user-attachments/assets/c418f46d-d473-470b-8f33-6312b082f67b" />
+
 
 ## Características
 - Manejo de grupos (tableros) para dividir tareas por secciones (Crear, Editar y Eliminar grupos).

@@ -1,4 +1,4 @@
-# Gestor de tareas básico
+# Mis notas
 
 Una aplicación web que permite organizar tareas mediante listas y grupos para gestionarlas fácilmente.
 

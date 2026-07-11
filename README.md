@@ -40,11 +40,14 @@ Una aplicación web que permite organizar tareas mediante listas y grupos para g
 - vue 3.5.13
 - MySQL
 
-## Estructura del proyecto (opcional)
-...
-
 ## Contribuir
-...
+Las contribuciones son bienvenidas:
+
+1. Haz un fork del proyecto
+2. Crea una rama (`git checkout -b feature/nueva-funcion`)
+3. Haz commit de tus cambios (`git commit -m 'Agrega nueva función'`)
+4. Sube la rama (`git push origin feature/nueva-funcion`)
+5. Abre un Pull Request
 
 ## Licencia
-...
+Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
